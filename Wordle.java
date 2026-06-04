@@ -6,8 +6,9 @@ import javafx.scene.layout.GridPane;
 import javafx.geometry.Pos;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Button;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
+import java.util.ArrayList;
+import java.util.Random;
+
 
 
 public class Wordle extends Application {
@@ -19,13 +20,23 @@ public class Wordle extends Application {
     @Override
     public void start(Stage stage) {
         stage.setTitle("Visaagan's Wordle");
+
+        ArrayList<String> words = new ArrayList<>();
+        words.add("XYLEM");
         
+
+        Random r = new Random();
+        randomWord = words.get(r.nextInt(words.size()));
+
+
 
         //Creates the grid that holds the letters
         GridPane board = new GridPane();
         board.setAlignment(Pos.CENTER);
         board.setHgap(5);
         board.setVgap(5);
+        board.setStyle("-fx-background-color:white;");
+
 
         //creates 6 rows and 5 columns
         for (int row = 0; row < 6; row++) {
@@ -38,9 +49,9 @@ public class Wordle extends Application {
                 square.setAlignment(Pos.CENTER);
 
                 square.setStyle(
-                    "-fx-border-color: black;" +
-                    "-fx-font-size: 24px;" +
-                    "-fx-font-weight: black;"
+                    "-fx-border-color: #d3d6da ;" +
+                    "-fx-font-size: 24px;"
+                    
                 );
 
                 cells[row][col] = square;
@@ -49,10 +60,9 @@ public class Wordle extends Application {
             }
         }
 
-        //creates the window to play in and adds the "board" onto it
-        Scene scene = new Scene(board, 600, 700);
+        
 
-        //
+        //Adds the textfield, button, and the label under the grid
         TextField guessField = new TextField();
         board.add(guessField, 0, 7, 5, 1);
 
@@ -64,6 +74,7 @@ public class Wordle extends Application {
 
 
         guessButton.setOnAction(e -> {
+            
         String guess;
         guess = guessField.getText().toUpperCase().trim();
 
@@ -72,6 +83,14 @@ public class Wordle extends Application {
                 return;
             }
 
+
+            if (!words.contains(guess)) {
+
+                message.setText("Not a valid word!");
+                return;
+
+            }
+            
             if (currentRow >= 6) {
                 return;
             }
@@ -87,20 +106,20 @@ public class Wordle extends Application {
                 //Green
                 if (guessLetter == answerLetter) {
                     cells[currentRow][col].setStyle(
-                        "-fx-background-color: green;" +
+                        "-fx-background-color: #538d4e;" +
                         "-fx-text-fill: white;" +
-                        "-fx-border-color: black;" +
+                        "-fx-border-color: #538d4e;" +
                         "-fx-font-size: 24px;" +
                         "-fx-font-weight: bold;"
                     );
                 }
                 //Yellow
-                else if (randomWord.contains(guessLetter))) {
+                else if (randomWord.contains(String.valueOf(guessLetter))) {
 
                     cells[currentRow][col].setStyle(
-                        "-fx-background-color: gold;" +
-                        "-fx-text-fill: black;" +
-                        "-fx-border-color: black;" +
+                        "-fx-background-color: #b59f3b;" +
+                        "-fx-text-fill: white;" +
+                        "-fx-border-color: #b59f3b;" +
                         "-fx-font-size: 24px;" +
                         "-fx-font-weight: bold;"
                     );
@@ -109,24 +128,48 @@ public class Wordle extends Application {
                 //Gray
                 else { 
                     cells[currentRow][col].setStyle(
-                        "-fx-background-color: lightgray;" +
-                        "-fx-text-fill: black;" +
-                        "-fx-border-color: black;" +
+                        "-fx-background-color: #3a3a3c;" +
+                        "-fx-text-fill: white;" +
+                        "-fx-border-color: #3a3a3c;" +
                         "-fx-font-size: 24px;" +
                         "-fx-font-weight: bold;"
                     );
                 }
             }
-        
+            if (guess.equals(randomWord)) {
+
+                message.setText("You Win!");
+                guessButton.setDisable(true);
+                return;
+            }
+
+            currentRow++;
+
+            if (currentRow == 6) {
+
+                message.setText(
+                    "Game Over! Word was " + randomWord
+                );
+
+                guessButton.setDisable(true);
+            }
+
+            guessField.clear();
+
+
+        }
+        );
+
+        //creates the window to play in and adds the "board" onto it
+        Scene scene = new Scene(board, 600, 700);        
 
 
         //makes it all visible
         stage.setScene(scene);
         stage.show();
-        
+    
         }
-    );
-    }
+    
     public static void main(String[] args) {
         launch();
     }
