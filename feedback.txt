@@ -1,0 +1,9 @@
+K(30%): 100
+I(30%): 90
+C(10%): 100
+A(30%): 100
+97%
+
+Great work Visaagan.
+The only improvements I would make would be to make the interface more friendly in a similar way to wordles.
+Otherwise great work.
