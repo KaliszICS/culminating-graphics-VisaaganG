@@ -6,4 +6,6 @@ A(30%): 100
 
 Great work Visaagan.
 The only improvements I would make would be to make the interface more friendly in a similar way to wordles.
+Also use more functions in your code to help break it up and make it easy to read and edit.
+Good function names and breaking up of code mean we can mainly understand just by reading the function names rather than the code.
 Otherwise great work.
